@@ -32,7 +32,11 @@ public class ClientApp
             //String s = "hello";
             DatagramPacket pack=new DatagramPacket(param.getBytes(StandardCharsets.UTF_8),param.getBytes().length, InetAddress.getByName("localhost"),2465);
             sock.send(pack);
-            //以下部分接收从服务器返回的
+
+
+            /**
+             * 以下部分是接收返回数据
+             */
             pack=new DatagramPacket(new byte[2048],2048);
             sock.receive(pack);
             System.out.println("receive:"+pack.getAddress());

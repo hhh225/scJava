@@ -1,6 +1,7 @@
 package SCs;
 
 
+import Dao.Dao;
 import domain.Token;
 
 import java.util.HashMap;
@@ -13,7 +14,13 @@ public class AccessControl {
     static LinkedList<String> admins=new LinkedList<>();
     public LinkedList<Token> tokens;
     static public LinkedList<String> devices=new LinkedList<>();
+    static {
+        devices= Dao.getDevice();
+    }
     static HashMap<String,LinkedList<String>> users_devices=new HashMap<>();
+    static {
+        users_devices=Dao.getUserDevice();
+    }
     Aggregator aggregator;
 
     public AccessControl()
@@ -32,16 +39,17 @@ public class AccessControl {
     }
 
 
-    static public Boolean addDevice(String addr)
+    public static Boolean addDevice(String addr)
     {
-        if (!devices.contains(addr))
+        Dao dao=new Dao();
+        if (dao.addDevice(addr))
         {
             devices.add(addr);
 
             return true;
-
         }
         return false;
+
     }
 
     public static Boolean addAdmin(String addr)
@@ -56,8 +64,10 @@ public class AccessControl {
     public static Boolean addUserDevicesMapping(String userAddr,String deviceAddr)
     {
         LinkedList<String> uds=users_devices.get(userAddr);
+        Dao dao=new Dao();
         if (uds==null)
         {
+            dao.addUserDevice(userAddr, deviceAddr);
             uds=new LinkedList<>();
             uds.add(deviceAddr);
             users_devices.put(userAddr, uds);
@@ -66,6 +76,7 @@ public class AccessControl {
         else {
             if (!uds.contains(deviceAddr))
             {
+                dao.addUserDevice(userAddr, deviceAddr);
                 uds.add(deviceAddr);
                 return true;
             }
@@ -78,7 +89,9 @@ public class AccessControl {
         System.out.println("AccessControl request:"+userAddr);
         System.out.println("AccessControl request:"+deviceAddr);
         System.out.println("AccessControl request:"+nOracles);
-
+        /**
+         * 检查设备是否存在
+         */
         boolean deviceExist=false;
         for (String addr:devices)
         {
@@ -93,6 +106,9 @@ public class AccessControl {
             return "设备不存在";
         }
         else {
+            /**
+             * 检查用户是否能访问这个设备
+             */
             boolean auth=false;
             LinkedList<String> temps= users_devices.get(userAddr);  //temps代表该用户能访问的设备
             for (String addr:temps)
@@ -103,6 +119,9 @@ public class AccessControl {
                     break;
                 }
             }
+            /**
+             * 用户能访问这个设备
+             */
             if (auth)
             {
                 Aggregator agg=new Aggregator();

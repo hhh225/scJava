@@ -1,12 +1,20 @@
 package utils;
 
+import Dao.Dao;
 import domain.Oracle;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class OraclesControl {
-    private static HashMap<String, Oracle> oracles = new HashMap<>();
+    public static HashMap<String, Oracle> oracles = new HashMap<>();
+    static {
+        LinkedList<Oracle> oracles1=Dao.getOracle();
+        for (Oracle oracle:oracles1)
+        {
+            oracles.put(oracle.address, oracle);
+        }
+    }
     public static Oracle findOracle(String addr)
     {
         addOracle(addr);

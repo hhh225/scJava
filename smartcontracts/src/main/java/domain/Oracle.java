@@ -17,4 +17,10 @@ public class Oracle {
         this.numResponse = 0;
         this.avgReputation=0;
     }
+
+    public Oracle(String address, Integer numResponse, Integer avgReputation) {
+        this.address = address;
+        this.numResponse = numResponse;
+        this.avgReputation = avgReputation;
+    }
 }

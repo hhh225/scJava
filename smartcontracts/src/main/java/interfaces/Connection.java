@@ -18,9 +18,6 @@ public class Connection implements Runnable{
         this.pack = pack;
     }
 
-    public Connection() {
-    }
-
     static {
         try {
             sock = new DatagramSocket(2465, InetAddress.getByName("localhost"));
@@ -31,16 +28,25 @@ public class Connection implements Runnable{
         }
     }
 
+    /**
+     * the process of new thread to handle request
+     */
     @Override
     public void run() {
-        byte[] bdata=pack.getData();      //获取到的数据体
+        //pack contains request data
+        byte[] bdata=pack.getData();
         try {
-            DatagramSocket retsSock =new DatagramSocket();
+
             String data= null;
-            data = new String(bdata,0, pack.getLength(),"utf-8");  //transfer to string
-            String[] datas=data.split("/");       //split the data with :
+            data = new String(bdata,0, pack.getLength(),"utf-8");  //trans the request data to string
+            String[] datas=data.split("/");       //split the request data with /
+
+            //the retsSock is for returning result
+            DatagramSocket retsSock =new DatagramSocket();
+
+            //datas[0] is the function, datas[1]... is the params
             switch (datas[0]){
-                case "AccessConstruct": // 保存
+                case "AccessConstruct":
                     Boolean res=AccessControl.AccessConstruct(datas[1]);
                     String retMe="合约已构建，不能重复构建";
                     if (res){
@@ -123,10 +129,13 @@ public class Connection implements Runnable{
     public static void main(String[] args) {
         while (true)
         {
-            DatagramPacket pack=new DatagramPacket(new byte[2048],2048); //获取数据，
+            DatagramPacket pack=new DatagramPacket(new byte[2048],2048); //create a pack to receive request from outside world
+            /**
+             * for each request(each pack), create a thread to handle
+             */
             try {
                 sock.receive(pack);
-                Thread req=new Thread(new Connection(pack));
+                Thread req=new Thread(new Connection(pack));     //new thread
                 req.start();
             } catch (IOException e) {
                 e.printStackTrace();
