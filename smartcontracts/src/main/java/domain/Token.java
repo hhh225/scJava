@@ -1,4 +1,4 @@
-package SCs.domain;
+package domain;
 
 public class Token {
     String user;

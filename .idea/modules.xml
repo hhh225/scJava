@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/bsnJava/bsnJava.iml" filepath="$PROJECT_DIR$/bsnJava/bsnJava.iml" />
       <module fileurl="file://$PROJECT_DIR$/smartcontracts/smartcontracts.iml" filepath="$PROJECT_DIR$/smartcontracts/smartcontracts.iml" />
     </modules>
   </component>

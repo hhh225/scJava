@@ -1,24 +1,30 @@
 package SCs;
 
-import SCs.domain.QueryEnitty;
-import SCs.domain.RespondEntity;
-
-public class OracleSC {
+public class OracleSC implements Runnable{
     String oracleAddr;
     Aggregator aggregator;
-    public OracleSC(String oracleAddr)
+    String deviceAddr;
+
+    public OracleSC(String oracleAddr,Aggregator aggregator,String deviceAddr)
     {
         this.oracleAddr=oracleAddr;
-    }
-
-    public void query(QueryEnitty queryEnitty,String iotdeviceAddr, Aggregator aggregator)
-    {
         this.aggregator=aggregator;
-
+        this.deviceAddr=deviceAddr;
     }
 
-    public void reply(){
-        RespondEntity respondEntity=new RespondEntity();
-        aggregator.oracleResponse(respondEntity);
+    public String query(){
+        //访问预言机
+        //得到数据
+        String data="fake data";
+        return data;
+    }
+
+
+    @Override
+    public void run() {
+        //发送请求
+        //结果
+        String data="fake data";
+        //aggregator.oracleResponse(oracleAddr,data);
     }
 }

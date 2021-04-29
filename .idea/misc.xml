@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/smartcontracts/pom.xml" />
+        <option value="$PROJECT_DIR$/bsnJava/pom.xml" />
       </list>
     </option>
   </component>
